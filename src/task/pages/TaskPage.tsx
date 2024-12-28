@@ -17,55 +17,85 @@ import 'dayjs/locale/es';
 import { Pencil, Plus, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { TaskInterface } from "@/interfaces";
-
+import { Loading } from "@/ui/components/Loading";
+import { useCreateTaskMutation, useDeleteTaskMutation, useGetTasksQuery, useUpdateTaskMutation } from '@/store/api/task/taskApi';
 
 export const TaskPage = () => {
-  const [tasks, setTasks] = useState<TaskInterface[]>([]);
   const [newTask, setNewTask] = useState<Partial<TaskInterface>>({});
   const [editingTask, setEditingTask] = useState<TaskInterface | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  // RTK Query hooks
+  const { data: tasks, isLoading } = useGetTasksQuery();
+  const [createTask, { isLoading: isCreating }] = useCreateTaskMutation();
+  const [updateTask, { isLoading: isUpdating }] = useUpdateTaskMutation();
+  const [deleteTask, { isLoading: isDeleting }] = useDeleteTaskMutation();
 
   dayjs.locale('es');
 
   const onOpenDialog = () => setIsDialogOpen((prev) => !prev);
 
-
-  const handleAddTask = () => {
+  const handleAddTask = async () => {
     if (!newTask.title) return;
 
-    const task: TaskInterface = {
-      id: Math.random().toString(36).substr(2, 9),
-      title: newTask.title,
-      description: newTask.description || null,
-      completed: false,
-      owner: 'current-user',
-      createdAt: new Date(),
-    };
-
-    setTasks([...tasks, task]);
-    setNewTask({});
-    setIsDialogOpen(false);
+    try {
+      await createTask({
+        title: newTask.title,
+        description: newTask.description || null,
+      });
+      setNewTask({});
+      setIsDialogOpen(false);
+    } catch (error) {
+      console.error('Error creating task:', error);
+    }
   };
 
-  const handleUpdateTask = () => {
+  const handleUpdateTask = async () => {
     if (!editingTask) return;
 
-    setTasks(tasks.map((task) =>
-      task.id === editingTask.id ? editingTask : task
-    ));
-    setEditingTask(null);
-    setIsDialogOpen(false);
+    try {
+      await updateTask({
+        taskId: editingTask._id,
+        body: {
+          title: editingTask.title,
+          description: editingTask.description,
+          completed: editingTask.completed,
+        },
+      });
+      setEditingTask(null);
+      setIsDialogOpen(false);
+    } catch (error) {
+      console.error('Error updating task:', error);
+    }
   };
 
-  const handleDeleteTask = (id: string) => {
-    setTasks(tasks.filter((task) => task.id !== id));
+  const handleDeleteTask = async (id: string) => {
+    try {
+      console.log(id)
+      await deleteTask(id);
+    } catch (error) {
+      console.error('Error deleting task:', error);
+    }
   };
 
-  const handleToggleComplete = (id: string) => {
-    setTasks(tasks.map((task) =>
-      task.id === id ? { ...task, completed: !task.completed } : task
-    ));
+  const handleToggleComplete = async (task: TaskInterface) => {
+    try {
+      await updateTask({
+        taskId: task?._id,
+        body: {
+          title: task?.title,
+          description: task?.description,
+          completed: !task?.completed,
+        },
+      });
+    } catch (error) {
+      console.error('Error toggling task completion:', error);
+    }
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className="max-w-4xl mx-auto p-4 sm:p-6">
@@ -73,7 +103,10 @@ export const TaskPage = () => {
         <h1 className="text-2xl sm:text-3xl font-bold">Lista de Tareas</h1>
         <DialogRoot open={isDialogOpen} onOpenChange={onOpenDialog}>
           <DialogTrigger asChild>
-            <Button className="flex items-center gap-2 w-full sm:w-auto">
+            <Button
+              className="flex items-center gap-2 w-full sm:w-auto"
+              disabled={isCreating}
+            >
               <Plus className="w-4 h-4" /> Agregar Tarea
             </Button>
           </DialogTrigger>
@@ -109,12 +142,12 @@ export const TaskPage = () => {
             </div>
             <DialogFooter>
               <DialogActionTrigger asChild>
-                <Button variant="outline">Cancel</Button>
+                <Button variant="outline">Cancelar</Button>
               </DialogActionTrigger>
 
               <Button
                 onClick={editingTask ? handleUpdateTask : handleAddTask}
-                className="w-full sm:w-auto"
+                disabled={isCreating || isUpdating}
               >
                 {editingTask ? 'Actualizar' : 'Agregar'} Tarea
               </Button>
@@ -124,17 +157,18 @@ export const TaskPage = () => {
       </div>
 
       <div className="space-y-4">
-        {tasks.map((task) => (
-          <CardRoot key={task.id} className="w-full">
+        {tasks?.data?.map((task: TaskInterface) => (
+          <CardRoot key={task?._id} className="w-full">
             <CardHeader className="pb-2">
               <div className="flex flex-col sm:flex-row items-start justify-between gap-2">
                 <div className="flex items-center gap-2">
                   <Checkbox
-                    checked={task.completed}
-                    onCheckedChange={() => handleToggleComplete(task.id)}
+                    checked={task?.completed}
+                    onCheckedChange={() => handleToggleComplete(task)}
+                    disabled={isUpdating}
                   />
-                  <CardTitle className={`text-lg sm:text-xl ${task.completed ? 'line-through text-gray-500' : ''}`}>
-                    {task.title}
+                  <CardTitle className={`text-lg sm:text-xl ${task?.completed ? 'line-through text-gray-500' : ''}`}>
+                    {task?.title}
                   </CardTitle>
                 </div>
                 <div className="flex gap-2 w-full sm:w-auto">
@@ -144,6 +178,7 @@ export const TaskPage = () => {
                       setEditingTask(task);
                       setIsDialogOpen(true);
                     }}
+                    disabled={isUpdating}
                     className="flex-1 sm:flex-none"
                   >
                     <Pencil className="w-4 h-4" />
@@ -151,7 +186,8 @@ export const TaskPage = () => {
                   </Button>
                   <Button
                     variant="outline"
-                    onClick={() => handleDeleteTask(task.id)}
+                    onClick={() => handleDeleteTask(task?._id)}
+                    disabled={isDeleting}
                     className="flex-1 sm:flex-none"
                   >
                     <Trash2 className="w-4 h-4" />
@@ -160,17 +196,17 @@ export const TaskPage = () => {
                 </div>
               </div>
               <CardDescription>
-                Creada el {dayjs(task.createdAt).format('D [de] MMMM[,] YYYY [a las] h:mm A')}
+                Creada el {dayjs(task?.createdAt).format('D [de] MMMM[,] YYYY [a las] h:mm A')}
               </CardDescription>
             </CardHeader>
-            {task.description && (
+            {task?.description && (
               <CardBody>
-                <p className="text-sm sm:text-base">{task.description}</p>
+                <p className="text-sm sm:text-base">{task?.description}</p>
               </CardBody>
             )}
           </CardRoot>
         ))}
-        {tasks.length === 0 && (
+        {tasks?.data?.length === 0 && (
           <CardRoot>
             <CardBody className="p-6 sm:p-8 text-center text-gray-500">
               No hay tareas aún. ¡Haz clic en "Agregar Tarea" para crear una!

@@ -4,7 +4,7 @@ export interface TaskInterface {
   completed: boolean;
   createdAt: Date;
   description: string | null;
-  id: string;
+  _id: string;
   owner: string;
   title: string;
 }

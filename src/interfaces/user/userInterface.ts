@@ -1,7 +1,7 @@
 import { ApiResponseInterface } from "../api/ApiResponseInterface";
 
 export interface UserInterface {
-  id: string;
+  _id: string;
   name: string;
   email: string;
   createdAt: Date;
