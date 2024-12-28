@@ -38,7 +38,7 @@ export const authApi = api.injectEndpoints({
 
         checkAuth: builder.query<UserApiResponseInterface, void>({
             query: () => ({
-                url: '/auth/check_auth',
+                url: '/auth/check-auth',
                 headers: getHeaders(),
             }),
             providesTags: ['user'],

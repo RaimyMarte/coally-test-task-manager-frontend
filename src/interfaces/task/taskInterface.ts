@@ -1,11 +1,12 @@
 import { ApiResponseInterface } from "../api/ApiResponseInterface";
 
 export interface TaskInterface {
-  title: string;
-  description: string | null;
   completed: boolean;
-  owner: string;
   createdAt: Date;
+  description: string | null;
+  id: string;
+  owner: string;
+  title: string;
 }
 
 export interface TaskApiResponseInterface extends ApiResponseInterface {
