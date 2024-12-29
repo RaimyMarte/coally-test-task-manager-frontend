@@ -8,6 +8,13 @@ export interface LoginBody {
     password: string;
 }
 
+export interface SignUpBody {
+    email: string;
+    name: string;
+    password: string;
+    confirmPassword: string;
+}
+
 export const authApi = api.injectEndpoints({
     endpoints: (builder) => ({
         login: builder.mutation<UserApiResponseInterface, LoginBody>({
@@ -25,6 +32,15 @@ export const authApi = api.injectEndpoints({
                 return response;
             },
             invalidatesTags: ['user'],
+        }),
+
+        signUp: builder.mutation<ApiResponseInterface, SignUpBody>({
+            query: (body) => ({
+                url: '/auth/sign-up',
+                method: 'POST',
+                body,
+                headers: getHeaders(),
+            }),
         }),
 
         logout: builder.mutation<ApiResponseInterface, void>({
@@ -49,6 +65,7 @@ export const authApi = api.injectEndpoints({
 
 export const {
     useLoginMutation,
+    useSignUpMutation,
     useLogoutMutation,
     useCheckAuthQuery,
 } = authApi;

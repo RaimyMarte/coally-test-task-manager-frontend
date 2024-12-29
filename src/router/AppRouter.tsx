@@ -1,10 +1,10 @@
 import { Navigate, Route, Routes, } from "react-router-dom"
 import { PrivateRoutes, PublicRoutes } from "."
 import { TaskPage } from "@/task/pages/TaskPage"
-import { LoginPage } from "@/auth/pages/LoginPage"
 import { useAuthStore, useCheckAuth } from "@/hooks"
 import { NotFoundPage } from "@/ui/pages/NotFoundPage"
 import { Loading } from "@/ui/components/Loading"
+import { SignUpPage, LoginPage } from "@/auth/pages"
 
 export const AppRouter = () => {
     const { status, } = useAuthStore()
@@ -24,6 +24,7 @@ export const AppRouter = () => {
             <Route element={<PublicRoutes status={status} />} >
                 <Route path="/" element={<Navigate to='/auth/login' />} />
                 <Route path="/auth/login" element={<LoginPage />} />
+                <Route path="/auth/sign-up" element={<SignUpPage />} />
 
                 <Route path="/*" element={<NotFoundPage />} />
             </Route>
