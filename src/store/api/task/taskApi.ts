@@ -8,7 +8,7 @@ export interface TaskBody {
 }
 
 interface UpdateTaskBody extends TaskBody {
-    completed: boolean;
+    completed?: boolean;
 }
 
 export interface UpdateTask {

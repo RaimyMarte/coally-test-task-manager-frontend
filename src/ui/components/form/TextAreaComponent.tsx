@@ -1,8 +1,8 @@
-import { Input, Text } from "@chakra-ui/react";
-import { Field } from "../chakra/field";
+import { Text, Textarea } from "@chakra-ui/react";
 import { FieldErrors, RegisterOptions, UseFormRegister } from "react-hook-form";
+import { Field } from "../chakra/field";
 
-interface TextInputComponentProps {
+interface TextTextAreaComponentProps {
     name: string;
     label?: string;
     helperText?: string;
@@ -13,12 +13,11 @@ interface TextInputComponentProps {
         "maxLength" | "minLength" | "validate" | "required" | "pattern"
     >
     placeholder?: string
-    type?: string
     disabled?: boolean
 }
 
 
-export const InputComponent = ({ disabled = false, name, register, rules, formErrors, type = 'text', placeholder, label, helperText }: TextInputComponentProps) => {
+export const TextAreaComponent = ({ disabled = false, name, register, rules, formErrors, placeholder, label, helperText }: TextTextAreaComponentProps) => {
     const required = Object.keys(rules || {}).includes('required');
 
     return (
@@ -34,8 +33,8 @@ export const InputComponent = ({ disabled = false, name, register, rules, formEr
             invalid={!!formErrors[name]}
             errorText={formErrors[name]?.message?.toString()}
         >
-            <Input
-                type={type}
+            <Textarea
+                autoresize
                 disabled={disabled}
                 {...register(name, rules)}
                 placeholder={placeholder}
