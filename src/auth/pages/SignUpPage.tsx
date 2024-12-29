@@ -29,7 +29,7 @@ export const SignUpPage = () => {
         watch,
     } = useForm<SignUpBody>();
 
-    const password = watch('password'); // Para validar que las contraseñas coincidan
+    const password = watch('password');
 
     const onFormSubmit = async (data: SignUpBody) => {
         try {
@@ -139,7 +139,7 @@ export const SignUpPage = () => {
                         <Button
                             type="submit"
                             size="lg"
-                            disabled={signUpLoading}
+                            loading={signUpLoading}
                             loadingText="Registrándote..."
                             bg="blue.600"
                             color='white'
@@ -148,7 +148,7 @@ export const SignUpPage = () => {
                             Registrarme
                         </Button>
 
-                        <Text fontSize="sm" color={{ base: "gray.600", _dark: "gray.300" }} textAlign="center">
+                        <Text fontSize="sm" textAlign="center">
                             ¿Ya tienes una cuenta?{' '}
                             <ChakraLink
                                 as={RouterLink}

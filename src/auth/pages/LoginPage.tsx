@@ -73,10 +73,10 @@ export const LoginPage = () => {
               formErrors={formErrors}
               rules={{
                 required: 'Correo electrónico es requerido',
-                // pattern: {
-                //   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                //   message: 'Invalid email address',
-                // },
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: 'El correo electrónico no es válido',
+                },
               }}
             />
 
@@ -90,10 +90,6 @@ export const LoginPage = () => {
               formErrors={formErrors}
               rules={{
                 required: 'Contraseña es requerida',
-                // minLength: {
-                //   value: 6,
-                //   message: 'Password must be at least 6 characters',
-                // },
               }}
             />
 
@@ -111,8 +107,8 @@ export const LoginPage = () => {
             <Button
               type="submit"
               size="lg"
-              disabled={loginLoading}
-              loadingText="Signing in..."
+              loading={loginLoading}
+              loadingText="Iniciando Sesión..."
               bg="blue.600"
               color='white'
               w="full"
@@ -120,7 +116,7 @@ export const LoginPage = () => {
               Iniciar Sesión
             </Button>
 
-            <Text fontSize="sm" color={{ base: "gray.600", _dark: "gray.300" }} textAlign="center">
+            <Text fontSize="sm" textAlign="center">
               ¿No tienes una cuenta?{' '}
               <ChakraLink
                 as={RouterLink}

@@ -21,8 +21,8 @@ interface AuthLayoutProps {
 export const AuthLayout = ({ children, title, subtitle }: AuthLayoutProps) => {
 
     return (
-        <Box minH="100vh" bg={{ base: "gray.50", _dark: "gray.900" }}>
-            <Container maxW="container.xl" h="100vh" p={0}>
+        <Box minH="100vh" bg={{ base: "gray.50", _dark: "gray.900" }} >
+            <Container fluid h="100vh" p={0}>
                 <Flex h="full" direction={{ base: 'column', md: 'row' }}>
                     <Flex flex={1} align="center" justify="center" p={8}>
                         <CardRoot w="full" maxW="md" boxShadow="lg">
@@ -30,7 +30,7 @@ export const AuthLayout = ({ children, title, subtitle }: AuthLayoutProps) => {
                                 <CardTitle fontSize="2xl" fontWeight="bold">
                                     {title}
                                 </CardTitle>
-                                <CardDescription color={{ base: "gray.600", _dark: "gray.300" }} >
+                                <CardDescription  >
                                     {subtitle}
                                 </CardDescription>
                             </CardHeader>
