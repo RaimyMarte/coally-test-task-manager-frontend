@@ -21,7 +21,6 @@ export const TextAreaComponent = ({ disabled = false, name, register, rules, for
     const required = Object.keys(rules || {}).includes('required');
 
     return (
-
         <Field
             label={(
                 <>

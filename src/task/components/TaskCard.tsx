@@ -1,7 +1,9 @@
 import { TaskInterface } from "@/interfaces";
 import { useDeleteTaskMutation, useUpdateTaskMutation } from '@/store/api/task/taskApi';
 import { Checkbox } from "@/ui/components/chakra/checkbox";
+import { toaster } from "@/ui/components/chakra/toaster";
 import { Tooltip } from "@/ui/components/chakra/tooltip";
+import { isMutationSuccessResponse } from "@/utils";
 import { CardDescription, CardHeader, CardRoot, CardTitle, Flex, IconButton } from "@chakra-ui/react";
 import dayjs from 'dayjs';
 import 'dayjs/locale/es';
@@ -21,15 +23,38 @@ export const TaskCard = ({ task, setEditingTask, setIsDialogOpen }: TaskCardProp
 
     const handleDeleteTask = async (id: string) => {
         try {
-            await deleteTask(id);
+            const response = await deleteTask(id);
+
+            if (isMutationSuccessResponse(response)) {
+                const { data: respData } = response;
+
+                if (!respData?.isSuccess) {
+                    toaster.create({
+                        title: respData?.title,
+                        description: respData?.message,
+                        type: "error",
+                    })
+                    return;
+                }
+
+                toaster.create({
+                    title: respData?.title,
+                    description: respData?.message,
+                    type: "success",
+                })
+            }
         } catch (error) {
-            console.error('Error deleting task:', error);
+            toaster.create({
+                title: 'Error',
+                description: `Ha ocurrido un error: ${error}`,
+                type: "error",
+            })
         }
     };
 
     const handleToggleComplete = async (task: TaskInterface) => {
         try {
-            await updateTask({
+            const response = await updateTask({
                 taskId: task?._id,
                 body: {
                     title: task?.title,
@@ -37,8 +62,31 @@ export const TaskCard = ({ task, setEditingTask, setIsDialogOpen }: TaskCardProp
                     completed: !task?.completed,
                 },
             });
+
+            if (isMutationSuccessResponse(response)) {
+                const { data: respData } = response;
+
+                if (!respData?.isSuccess) {
+                    toaster.create({
+                        title: respData?.title,
+                        description: respData?.message,
+                        type: "error",
+                    })
+                    return;
+                }
+
+                toaster.create({
+                    title: respData?.title,
+                    description: respData?.message,
+                    type: "success",
+                })
+            }
         } catch (error) {
-            console.error('Error toggling task completion:', error);
+            toaster.create({
+                title: 'Error',
+                description: `Ha ocurrido un error: ${error}`,
+                type: "error",
+            })
         }
     };
 
