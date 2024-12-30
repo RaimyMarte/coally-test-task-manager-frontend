@@ -2,6 +2,10 @@
 
 Este es un proyecto de gestión de tareas realizado en React utilizando Chakra UI para el diseño de la interfaz de usuario. Está configurado con Vite para un entorno de desarrollo rápido y eficiente.
 
+## Aplicación desplegada en
+
+https://coally-test-task-manager-frontend-bu60kcaxi.vercel.app/
+
 ## Requisitos
 
 - [Node.js](https://nodejs.org/) (recomendado: LTS)
