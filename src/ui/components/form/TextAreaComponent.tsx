@@ -14,10 +14,11 @@ interface TextTextAreaComponentProps {
     >
     placeholder?: string
     disabled?: boolean
+    size?: "lg" | "sm" | "md" | "xl" | "xs" | undefined
 }
 
 
-export const TextAreaComponent = ({ disabled = false, name, register, rules, formErrors, placeholder, label, helperText }: TextTextAreaComponentProps) => {
+export const TextAreaComponent = ({ size = 'xl', disabled = false, name, register, rules, formErrors, placeholder, label, helperText }: TextTextAreaComponentProps) => {
     const required = Object.keys(rules || {}).includes('required');
 
     return (
@@ -34,6 +35,7 @@ export const TextAreaComponent = ({ disabled = false, name, register, rules, for
         >
             <Textarea
                 autoresize
+                size={size}
                 disabled={disabled}
                 {...register(name, rules)}
                 placeholder={placeholder}

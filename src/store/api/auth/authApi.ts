@@ -31,7 +31,7 @@ export const authApi = api.injectEndpoints({
 
                 return response;
             },
-            invalidatesTags: ['user'],
+            invalidatesTags: ['user', 'tasks'],
         }),
 
         signUp: builder.mutation<ApiResponseInterface, SignUpBody>({
@@ -56,7 +56,7 @@ export const authApi = api.injectEndpoints({
 
                 return response;
             },
-            invalidatesTags: ['user'],
+            invalidatesTags: ['user', 'tasks'],
         }),
 
         checkAuth: builder.query<UserApiResponseInterface, void>({
@@ -64,7 +64,7 @@ export const authApi = api.injectEndpoints({
                 url: '/auth/check-auth',
                 headers: getHeaders(),
             }),
-            providesTags: ['user'],
+            providesTags: ['user', 'tasks'],
         }),
 
     }),
