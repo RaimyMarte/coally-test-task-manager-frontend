@@ -4,7 +4,7 @@ Este es un proyecto de gestión de tareas realizado en React y Typescript utiliz
 
 ## Aplicación desplegada en
 
-https://coally-test-task-manager-frontend-bu60kcaxi.vercel.app/
+https://coally-test-task-manager-frontend.vercel.app/
 
 ## Requisitos
 
