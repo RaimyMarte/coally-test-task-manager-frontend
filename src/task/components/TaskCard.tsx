@@ -72,7 +72,7 @@ export const TaskCard = ({ task, setEditingTask, setIsDialogOpen }: TaskCardProp
             }}
             borderRadius="md"
             boxShadow="md"
-            p={2}
+            p={4}
         >
             {(isUpdating || isDeleting) && (
                 <Box
@@ -95,15 +95,16 @@ export const TaskCard = ({ task, setEditingTask, setIsDialogOpen }: TaskCardProp
             )}
 
             <CardHeader pb={2}>
-                <Flex direction={{ base: "column", sm: "row" }} justify="space-between" gap={2}>
-                    <Flex align="center" gap={3}>
+                <Flex direction={{ base: "column", sm: "row" }} justify="space-between" gap={4}>
+                    <Flex align="center" gap={4}>
                         <Checkbox
                             checked={task?.completed}
                             onChange={() => handleToggleStatus(task)}
                             disabled={isUpdating || isDeleting}
+                            size="lg"
                         />
                         <CardTitle
-                            fontSize="lg"
+                            fontSize={{ base: "md", sm: "lg" }}
                             color={task?.completed ? "gray.500" : "inherit"}
                             textDecoration={task?.completed ? "line-through" : "none"}
                         >
@@ -111,7 +112,12 @@ export const TaskCard = ({ task, setEditingTask, setIsDialogOpen }: TaskCardProp
                         </CardTitle>
                     </Flex>
 
-                    <Flex gap={2} direction={{ base: "column", sm: "row" }} align="center">
+                    <Flex
+                        gap={3}
+                        direction='row'
+                        justify={{ base: "flex-start", sm: "flex-end" }}
+                        align="center"
+                    >
                         <Tooltip content={`Detalles de ${task?.title}`}>
                             <IconButton
                                 variant="subtle"
@@ -119,8 +125,9 @@ export const TaskCard = ({ task, setEditingTask, setIsDialogOpen }: TaskCardProp
                                 as={RouterLink}
                                 {...{ to: `/task/${task?._id}` }}
                                 disabled={isUpdating || isDeleting}
+                                size={{ base: "md", sm: "lg" }}
                             >
-                                <Eye size={16} />
+                                <Eye size={20} />
                             </IconButton>
                         </Tooltip>
 
@@ -133,8 +140,9 @@ export const TaskCard = ({ task, setEditingTask, setIsDialogOpen }: TaskCardProp
                                     setIsDialogOpen(true);
                                 }}
                                 disabled={isUpdating || isDeleting}
+                                size={{ base: "md", sm: "lg" }}
                             >
-                                <Pencil size={16} />
+                                <Pencil size={20} />
                             </IconButton>
                         </Tooltip>
 
@@ -144,8 +152,9 @@ export const TaskCard = ({ task, setEditingTask, setIsDialogOpen }: TaskCardProp
                                 color={{ base: "gray.500", _dark: "gray.300" }}
                                 onClick={() => handleDeleteTask(task?._id)}
                                 disabled={isDeleting}
+                                size={{ base: "md", sm: "lg" }}
                             >
-                                <Trash2 size={16} />
+                                <Trash2 size={20} />
                             </IconButton>
                         </Tooltip>
                     </Flex>
