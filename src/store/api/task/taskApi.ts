@@ -1,4 +1,4 @@
-import { TaskApiResponseInterface } from '@/interfaces';
+import { TaskApiResponseInterface, TasksApiResponseInterface } from '@/interfaces';
 import { getHeaders } from '@/utils';
 import { api } from '../api';
 
@@ -18,7 +18,7 @@ export interface UpdateTask {
 
 export const taskApi = api.injectEndpoints({
     endpoints: (builder) => ({
-        getTasks: builder.query<TaskApiResponseInterface, string>({
+        getTasks: builder.query<TasksApiResponseInterface, string>({
             query: (completedOption) => ({
                 url: `/tasks?completed=${completedOption}`,
                 headers: getHeaders(),

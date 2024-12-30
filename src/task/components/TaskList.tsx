@@ -1,9 +1,10 @@
 import { TaskInterface } from "@/interfaces";
 import { useGetTasksQuery } from '@/store/api/task/taskApi';
+import { ErrorAlert } from "@/ui/components/ErrorAlert";
 import { Loading } from "@/ui/components/Loading";
 import { CardBody, CardRoot, VStack } from "@chakra-ui/react";
-import { TaskCard } from "./TaskCard";
 import { Dispatch, SetStateAction } from "react";
+import { TaskCard } from "./TaskCard";
 
 interface TaskListProps {
     setEditingTask: Dispatch<SetStateAction<TaskInterface | null>>;
@@ -12,10 +13,19 @@ interface TaskListProps {
 }
 
 export const TaskList = ({ setEditingTask, setIsDialogOpen, filterValue = 'all' }: TaskListProps) => {
-    const { data: tasks, isLoading } = useGetTasksQuery(filterValue);
+    const { data: tasks, isLoading, isError } = useGetTasksQuery(filterValue);
 
     if (isLoading) {
         return <Loading />;
+    }
+
+    if (isError || !tasks?.isSuccess) {
+        return (
+            <ErrorAlert
+                title='Error al cargar las tareas. Por favor, inténtalo de nuevo.'
+                message={tasks?.message || 'Ha ocurrido un error al cargar las tareas. Por favor, inténtalo de nuevo.'}
+            />
+        );
     }
 
     return (

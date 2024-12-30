@@ -1,22 +1,14 @@
 import { TaskInterface } from "@/interfaces";
-import { Radio, RadioGroup } from "@/ui/components/chakra/radio";
 import { Layout } from "@/ui/layout/Layout";
-import { Box, Flex, Heading, Stack } from "@chakra-ui/react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
 import 'dayjs/locale/es';
 import { useState } from 'react';
-import { TaskDialog, TaskList } from "../components";
+import { TaskDialog, TaskList, TasksFilter } from "../components";
 
 export const TaskPage = () => {
   const [editingTask, setEditingTask] = useState<TaskInterface | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-
   const [filterValue, setFilterValue] = useState("all");
-
-  const taskFilterOptions = [
-    { label: "Todas", value: "all" },
-    { label: "Pendientes", value: "false" },
-    { label: "Completadas", value: "true" },
-  ]
 
   return (
     <Layout>
@@ -39,15 +31,10 @@ export const TaskPage = () => {
         </Flex>
 
         <Box mb={4}>
-          <RadioGroup value={filterValue} onValueChange={(e) => setFilterValue(e.value)}>
-            <Stack direction="row" spaceX={4}>
-              {taskFilterOptions.map(option => (
-                <Radio key={option.value} value={option.value}>
-                  {option.label}
-                </Radio>
-              ))}
-            </Stack>
-          </RadioGroup>
+          <TasksFilter
+            filterValue={filterValue}
+            setFilterValue={setFilterValue}
+          />
         </Box>
 
         <TaskList

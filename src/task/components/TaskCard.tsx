@@ -18,6 +18,7 @@ import "dayjs/locale/es";
 import { Eye, Pencil, Trash2 } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 import { Link as RouterLink } from "react-router-dom";
+import { handleToggleComplete } from "../helpers/handleToggleComplete";
 
 interface TaskCardProps {
     task: TaskInterface;
@@ -60,43 +61,7 @@ export const TaskCard = ({ task, setEditingTask, setIsDialogOpen }: TaskCardProp
         }
     };
 
-    const handleToggleComplete = async (task: TaskInterface) => {
-        try {
-            const response = await updateTask({
-                taskId: task?._id,
-                body: {
-                    title: task?.title,
-                    description: task?.description,
-                    completed: !task?.completed,
-                },
-            });
-
-            if (isMutationSuccessResponse(response)) {
-                const { data: respData } = response;
-
-                if (!respData?.isSuccess) {
-                    toaster.create({
-                        title: respData?.title,
-                        description: respData?.message,
-                        type: "error",
-                    });
-                    return;
-                }
-
-                toaster.create({
-                    title: respData?.title,
-                    description: respData?.message,
-                    type: "success",
-                });
-            }
-        } catch (error) {
-            toaster.create({
-                title: "Error",
-                description: `Ha ocurrido un error: ${error}`,
-                type: "error",
-            });
-        }
-    };
+    const handleToggleStatus = async (task: TaskInterface) => handleToggleComplete(task, updateTask);
 
     return (
         <CardRoot
@@ -135,7 +100,7 @@ export const TaskCard = ({ task, setEditingTask, setIsDialogOpen }: TaskCardProp
                     <Flex align="center" gap={3}>
                         <Checkbox
                             checked={task?.completed}
-                            onChange={() => handleToggleComplete(task)}
+                            onChange={() => handleToggleStatus(task)}
                             disabled={isUpdating || isDeleting}
                         />
                         <CardTitle

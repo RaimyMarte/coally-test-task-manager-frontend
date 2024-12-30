@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes, } from "react-router-dom"
 import { PrivateRoutes, PublicRoutes } from "."
-import { TaskPage } from "@/task/pages/TaskPage"
+import { TaskDetailsPage, TaskPage } from "@/task/pages"
 import { useAuthStore, useCheckAuth } from "@/hooks"
 import { NotFoundPage } from "@/ui/pages/NotFoundPage"
 import { Loading } from "@/ui/components/Loading"
@@ -17,6 +17,7 @@ export const AppRouter = () => {
         <Routes>
             <Route element={<PrivateRoutes status={status} />} >
                 <Route path="/" element={<TaskPage />} />
+                <Route path="/task/:taskId" element={<TaskDetailsPage />} />
 
                 <Route path="/*" element={<NotFoundPage />} />
             </Route>
