@@ -1,7 +1,6 @@
 import { TaskInterface } from "@/interfaces";
 import { Layout } from "@/ui/layout/Layout";
 import { Box, Flex, Heading } from "@chakra-ui/react";
-import 'dayjs/locale/es';
 import { useState } from 'react';
 import { TaskDialog, TaskList, TasksFilter } from "../components";
 

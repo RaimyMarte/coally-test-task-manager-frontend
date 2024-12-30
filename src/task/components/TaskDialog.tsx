@@ -15,10 +15,11 @@ interface TaskDialogProps {
     isDialogOpen: boolean;
     setEditingTask: Dispatch<SetStateAction<TaskInterface | null>>
     setIsDialogOpen: Dispatch<SetStateAction<boolean>>;
+    showAddButton?: boolean;
 }
 
 
-export const TaskDialog = ({ editingTask, isDialogOpen, setEditingTask, setIsDialogOpen }: TaskDialogProps) => {
+export const TaskDialog = ({ editingTask, isDialogOpen, setEditingTask, setIsDialogOpen, showAddButton = true }: TaskDialogProps) => {
     const [createTask, { isLoading: isCreating }] = useCreateTaskMutation();
     const [updateTask, { isLoading: isUpdating }] = useUpdateTaskMutation();
 
@@ -86,15 +87,21 @@ export const TaskDialog = ({ editingTask, isDialogOpen, setEditingTask, setIsDia
             onOpenChange={onToggleDialog}
             onExitComplete={onCloseDialog}
         >
-            <DialogTrigger asChild>
-                <Button
-                    bg="blue.600"
-                    color="white"
-                    disabled={isCreating}
-                >
-                    <Plus /> Agregar Tarea
-                </Button>
-            </DialogTrigger>
+            {
+                showAddButton && (
+                    <DialogTrigger asChild>
+                        <Button
+                            bg="blue.600"
+                            color="white"
+                            disabled={isCreating}
+                        >
+                            <Plus /> Agregar Tarea
+                        </Button>
+                    </DialogTrigger>
+                )
+            }
+
+
             <DialogContent maxW="lg" mx="auto">
                 <form onSubmit={handleSubmit(onFormSubmit)}>
                     <DialogCloseTrigger />

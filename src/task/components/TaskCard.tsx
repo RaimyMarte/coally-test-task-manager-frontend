@@ -3,7 +3,7 @@ import { useDeleteTaskMutation, useUpdateTaskMutation } from "@/store/api/task/t
 import { Checkbox } from "@/ui/components/chakra/checkbox";
 import { toaster } from "@/ui/components/chakra/toaster";
 import { Tooltip } from "@/ui/components/chakra/tooltip";
-import { isMutationSuccessResponse } from "@/utils";
+import { formatDate, isMutationSuccessResponse } from "@/utils";
 import {
     CardDescription,
     CardHeader,
@@ -13,8 +13,7 @@ import {
     IconButton,
     Box,
 } from "@chakra-ui/react";
-import dayjs from "dayjs";
-import "dayjs/locale/es";
+
 import { Eye, Pencil, Trash2 } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 import { Link as RouterLink } from "react-router-dom";
@@ -153,7 +152,7 @@ export const TaskCard = ({ task, setEditingTask, setIsDialogOpen }: TaskCardProp
                 </Flex>
 
                 <CardDescription fontSize="sm" color="gray.500">
-                    Creada el {dayjs(task?.createdAt).format("D [de] MMMM[,] YYYY [a las] h:mm A")}
+                    Creada el {formatDate(task?.createdAt)}
                 </CardDescription>
             </CardHeader>
         </CardRoot>
