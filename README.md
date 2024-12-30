@@ -1,6 +1,6 @@
 # Proyecto React con Chakra UI
 
-Este es un proyecto de gestión de tareas realizado en React utilizando Chakra UI para el diseño de la interfaz de usuario. Está configurado con Vite para un entorno de desarrollo rápido y eficiente.
+Este es un proyecto de gestión de tareas realizado en React y Typescript utilizando Chakra UI para el diseño de la interfaz de usuario. Está configurado con Vite para un entorno de desarrollo rápido y eficiente.
 
 ## Aplicación desplegada en
 
