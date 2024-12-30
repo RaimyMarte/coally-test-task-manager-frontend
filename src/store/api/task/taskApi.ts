@@ -18,9 +18,9 @@ export interface UpdateTask {
 
 export const taskApi = api.injectEndpoints({
     endpoints: (builder) => ({
-        getTasks: builder.query<TaskApiResponseInterface, void>({
-            query: () => ({
-                url: '/tasks',
+        getTasks: builder.query<TaskApiResponseInterface, string>({
+            query: (completedOption) => ({
+                url: `/tasks?completed=${completedOption}`,
                 headers: getHeaders(),
             }),
             providesTags: ['tasks'],

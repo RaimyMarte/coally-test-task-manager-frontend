@@ -8,10 +8,11 @@ import { Dispatch, SetStateAction } from "react";
 interface TaskListProps {
     setEditingTask: Dispatch<SetStateAction<TaskInterface | null>>;
     setIsDialogOpen: Dispatch<SetStateAction<boolean>>;
+    filterValue: string;
 }
 
-export const TaskList = ({ setEditingTask, setIsDialogOpen }: TaskListProps) => {
-    const { data: tasks, isLoading } = useGetTasksQuery();
+export const TaskList = ({ setEditingTask, setIsDialogOpen, filterValue = 'all' }: TaskListProps) => {
+    const { data: tasks, isLoading } = useGetTasksQuery(filterValue);
 
     if (isLoading) {
         return <Loading />;
