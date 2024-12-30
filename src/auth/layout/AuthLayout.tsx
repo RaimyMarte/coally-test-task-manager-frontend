@@ -6,11 +6,12 @@ import {
     CardRoot,
     CardTitle,
     Container,
-    Flex
+    Flex,
+    Image
 } from "@chakra-ui/react";
 import { ReactNode } from "react";
 
-const logo = '/logo.svg';
+const image = '/image.svg';
 
 interface AuthLayoutProps {
     children: ReactNode;
@@ -59,9 +60,9 @@ export const AuthLayout = ({ children, title, subtitle }: AuthLayoutProps) => {
                                     alignItems="center"
                                     justifyContent="center"
                                 >
-                                    <img
-                                        src={logo}
-                                        alt="Logo"
+                                    <Image 
+                                        src={image}
+                                        alt="image"
                                         style={{
                                             maxWidth: '70%',
                                             maxHeight: '70%'

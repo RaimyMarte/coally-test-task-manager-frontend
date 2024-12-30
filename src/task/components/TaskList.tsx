@@ -19,7 +19,7 @@ export const TaskList = ({ setEditingTask, setIsDialogOpen, filterValue = 'all' 
         return <Loading />;
     }
 
-    if (isError || !tasks?.isSuccess) {
+    if (isError || tasks?.isSuccess === false) {
         return (
             <ErrorAlert
                 title='Error al cargar las tareas. Por favor, inténtalo de nuevo.'

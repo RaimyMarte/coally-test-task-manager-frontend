@@ -11,38 +11,35 @@ export const TaskPage = () => {
 
   return (
     <Layout>
-      <Box maxW="4xl" mx="auto" p={{ base: 4, sm: 6 }}>
-        <Flex
-          direction={{ base: "column", sm: "row" }}
-          justify="space-between"
-          align={{ base: "start", sm: "center" }}
-          gap={{ base: 4, sm: 0 }}
-          mb={6}
-        >
-          <Heading fontSize={{ base: "2xl", sm: "3xl" }}>Lista de Tareas</Heading>
+      <Flex
+        direction={{ base: "column", sm: "row" }}
+        justify="space-between"
+        align={{ base: "start", sm: "center" }}
+        gap={{ base: 4, sm: 0 }}
+        mb={6}
+      >
+        <Heading fontSize={{ base: "2xl", sm: "3xl" }}>Lista de Tareas</Heading>
 
-          <TaskDialog
-            editingTask={editingTask}
-            isDialogOpen={isDialogOpen}
-            setEditingTask={setEditingTask}
-            setIsDialogOpen={setIsDialogOpen}
-          />
-        </Flex>
-
-        <Box mb={4}>
-          <TasksFilter
-            filterValue={filterValue}
-            setFilterValue={setFilterValue}
-          />
-        </Box>
-
-        <TaskList
+        <TaskDialog
+          editingTask={editingTask}
+          isDialogOpen={isDialogOpen}
           setEditingTask={setEditingTask}
           setIsDialogOpen={setIsDialogOpen}
-          filterValue={filterValue}
         />
+      </Flex>
 
+      <Box mb={4}>
+        <TasksFilter
+          filterValue={filterValue}
+          setFilterValue={setFilterValue}
+        />
       </Box>
+
+      <TaskList
+        setEditingTask={setEditingTask}
+        setIsDialogOpen={setIsDialogOpen}
+        filterValue={filterValue}
+      />
     </Layout>
   );
 };

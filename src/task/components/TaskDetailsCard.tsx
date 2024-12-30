@@ -19,12 +19,14 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TaskDialog } from '../components';
 import { handleToggleComplete } from '../helpers/handleToggleComplete';
+import { Loading } from '@/ui/components/Loading';
 
 interface TaskDetailsCardProps {
-    taskData: TaskInterface
+    taskData: TaskInterface;
+    isLoading: boolean;
 }
 
-export const TaskDetailsCard = ({ taskData }: TaskDetailsCardProps) => {
+export const TaskDetailsCard = ({ taskData, isLoading }: TaskDetailsCardProps) => {
     const navigate = useNavigate();
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -38,6 +40,11 @@ export const TaskDetailsCard = ({ taskData }: TaskDetailsCardProps) => {
         setEditingTask(taskData);
         setIsDialogOpen(true);
     };
+
+    if (isLoading) {
+        return <Loading />;
+    }
+
 
     return (
         <CardRoot shadow="lg" variant="elevated">

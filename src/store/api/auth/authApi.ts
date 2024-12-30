@@ -49,6 +49,13 @@ export const authApi = api.injectEndpoints({
                 method: 'POST',
                 headers: getHeaders(),
             }),
+            transformResponse: (response: ApiResponseInterface) => {
+                if (response?.isSuccess) {
+                    Cookies.remove('token')
+                }
+
+                return response;
+            },
             invalidatesTags: ['user'],
         }),
 

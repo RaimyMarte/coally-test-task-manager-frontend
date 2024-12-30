@@ -11,9 +11,9 @@ export interface TaskInterface {
 }
 
 export interface TaskApiResponseInterface extends ApiResponseInterface {
-  data: TaskInterface;
+  data: TaskInterface | undefined;
 }
 
 export interface TasksApiResponseInterface extends ApiResponseInterface {
-  data: TaskInterface[];
+  data: TaskInterface[] | undefined;
 }
