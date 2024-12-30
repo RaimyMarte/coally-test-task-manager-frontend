@@ -1,17 +1,16 @@
 import { TaskInterface } from "@/interfaces";
-import { useDeleteTaskMutation, useUpdateTaskMutation } from "@/store/api/task/taskApi";
+import { useUpdateTaskMutation } from "@/store/api/task/taskApi";
 import { Checkbox } from "@/ui/components/chakra/checkbox";
-import { toaster } from "@/ui/components/chakra/toaster";
 import { Tooltip } from "@/ui/components/chakra/tooltip";
-import { formatDate, isMutationSuccessResponse } from "@/utils";
+import { formatDate } from "@/utils";
 import {
+    Box,
     CardDescription,
     CardHeader,
     CardRoot,
     CardTitle,
     Flex,
     IconButton,
-    Box,
 } from "@chakra-ui/react";
 
 import { Eye, Pencil, Trash2 } from "lucide-react";
@@ -23,42 +22,12 @@ interface TaskCardProps {
     task: TaskInterface;
     setEditingTask: Dispatch<SetStateAction<TaskInterface | null>>;
     setIsDialogOpen: Dispatch<SetStateAction<boolean>>;
+    isDeleting: boolean;
+    setIsDeleteTaskDialogOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-export const TaskCard = ({ task, setEditingTask, setIsDialogOpen }: TaskCardProps) => {
+export const TaskCard = ({ task, isDeleting, setEditingTask, setIsDialogOpen, setIsDeleteTaskDialogOpen }: TaskCardProps) => {
     const [updateTask, { isLoading: isUpdating }] = useUpdateTaskMutation();
-    const [deleteTask, { isLoading: isDeleting }] = useDeleteTaskMutation();
-
-    const handleDeleteTask = async (id: string) => {
-        try {
-            const response = await deleteTask(id);
-
-            if (isMutationSuccessResponse(response)) {
-                const { data: respData } = response;
-
-                if (!respData?.isSuccess) {
-                    toaster.create({
-                        title: respData?.title,
-                        description: respData?.message,
-                        type: "error",
-                    });
-                    return;
-                }
-
-                toaster.create({
-                    title: respData?.title,
-                    description: respData?.message,
-                    type: "success",
-                });
-            }
-        } catch (error) {
-            toaster.create({
-                title: "Error",
-                description: `Ha ocurrido un error: ${error}`,
-                type: "error",
-            });
-        }
-    };
 
     const handleToggleStatus = async (task: TaskInterface) => handleToggleComplete(task, updateTask);
 
@@ -150,8 +119,11 @@ export const TaskCard = ({ task, setEditingTask, setIsDialogOpen }: TaskCardProp
                             <IconButton
                                 variant="subtle"
                                 color={{ base: "gray.500", _dark: "gray.300" }}
-                                onClick={() => handleDeleteTask(task?._id)}
                                 disabled={isDeleting}
+                                onClick={() => {
+                                    setEditingTask(task);
+                                    setIsDeleteTaskDialogOpen(true);
+                                }}
                                 size={{ base: "md", sm: "lg" }}
                             >
                                 <Trash2 size={20} />

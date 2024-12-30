@@ -2,12 +2,16 @@ import { TaskInterface } from "@/interfaces";
 import { Layout } from "@/ui/layout/Layout";
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useState } from 'react';
-import { TaskDialog, TaskList, TasksFilter } from "../components";
+import { TaskDeleteDialog, TaskDialog, TaskList, TasksFilter } from "../components";
+import { useDeleteTaskMutation } from "@/store/api/task/taskApi";
 
 export const TaskPage = () => {
   const [editingTask, setEditingTask] = useState<TaskInterface | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [filterValue, setFilterValue] = useState("all");
+
+  const [isDeleteTaskDialogOpen, setIsDeleteTaskDialogOpen] = useState(false);
+  const [deleteTask, { isLoading: isDeleting }] = useDeleteTaskMutation();
 
   return (
     <Layout>
@@ -38,7 +42,18 @@ export const TaskPage = () => {
       <TaskList
         setEditingTask={setEditingTask}
         setIsDialogOpen={setIsDialogOpen}
+        isDeleting={isDeleting}
+        setIsDeleteTaskDialogOpen={setIsDeleteTaskDialogOpen}
         filterValue={filterValue}
+      />
+
+      <TaskDeleteDialog
+        isDeleteTaskDialogOpen={isDeleteTaskDialogOpen}
+        setIsDeleteTaskDialogOpen={setIsDeleteTaskDialogOpen}
+        editingTask={editingTask}
+        setEditingTask={setEditingTask}
+        deleteTask={deleteTask}
+        isDeleting={isDeleting}
       />
     </Layout>
   );

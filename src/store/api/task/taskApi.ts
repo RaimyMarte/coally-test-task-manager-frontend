@@ -1,4 +1,4 @@
-import { TaskApiResponseInterface, TasksApiResponseInterface } from '@/interfaces';
+import { ApiResponseInterface, TaskApiResponseInterface, TasksApiResponseInterface } from '@/interfaces';
 import { getHeaders } from '@/utils';
 import { api } from '../api';
 
@@ -56,7 +56,7 @@ export const taskApi = api.injectEndpoints({
         }),
 
 
-        deleteTask: builder.mutation<TaskApiResponseInterface, string>({
+        deleteTask: builder.mutation<ApiResponseInterface, string>({
             query: (taskId) => ({
                 url: `/tasks/${taskId}`,
                 method: 'DELETE',

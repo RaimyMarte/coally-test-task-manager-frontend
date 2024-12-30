@@ -10,9 +10,11 @@ interface TaskListProps {
     setEditingTask: Dispatch<SetStateAction<TaskInterface | null>>;
     setIsDialogOpen: Dispatch<SetStateAction<boolean>>;
     filterValue: string;
+    isDeleting: boolean;
+    setIsDeleteTaskDialogOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-export const TaskList = ({ setEditingTask, setIsDialogOpen, filterValue = 'all' }: TaskListProps) => {
+export const TaskList = ({ setEditingTask, setIsDialogOpen, filterValue = 'all', isDeleting, setIsDeleteTaskDialogOpen }: TaskListProps) => {
     const { data: tasks, isLoading, isError } = useGetTasksQuery(filterValue);
 
     if (isLoading) {
@@ -31,7 +33,14 @@ export const TaskList = ({ setEditingTask, setIsDialogOpen, filterValue = 'all' 
     return (
         <VStack spaceY={2} align="stretch">
             {tasks?.data?.map((task: TaskInterface) => (
-                <TaskCard key={task?._id} task={task} setEditingTask={setEditingTask} setIsDialogOpen={setIsDialogOpen} />
+                <TaskCard
+                    key={task?._id}
+                    task={task}
+                    setEditingTask={setEditingTask}
+                    setIsDialogOpen={setIsDialogOpen}
+                    isDeleting={isDeleting}
+                    setIsDeleteTaskDialogOpen={setIsDeleteTaskDialogOpen}
+                />
             ))}
             {tasks?.data?.length === 0 && (
                 <CardRoot>
